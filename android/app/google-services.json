@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "341311946960",
+    "project_id": "cellua-22713",
+    "storage_bucket": "cellua-22713.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:341311946960:android:fbdb2520cdabd4c7681ed5",
+        "android_client_info": {
+          "package_name": "com.example.ai_tennis"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB72iQQ97tWzDy0ghReW6o4ZtOb-TYKffw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
