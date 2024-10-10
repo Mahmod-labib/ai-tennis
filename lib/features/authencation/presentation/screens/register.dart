@@ -1,22 +1,31 @@
+import 'package:ai_tennis/core/routes/routes.dart';
+import 'package:ai_tennis/core/utils/size_config.dart';
 import 'package:ai_tennis/features/authencation/presentation/components/custom_button.dart';
 import 'package:ai_tennis/features/authencation/presentation/components/custom_text_form_field.dart';
 import 'package:ai_tennis/features/authencation/presentation/controller/auth_bloc.dart';
 import 'package:ai_tennis/features/authencation/presentation/controller/auth_event.dart';
 import 'package:ai_tennis/features/authencation/presentation/controller/auth_state.dart';
 import 'package:ai_tennis/features/authencation/presentation/screens/login.dart';
+import 'package:ai_tennis/main.dart';
 import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 
 class RegisterScreen extends StatelessWidget {
   const RegisterScreen({super.key});
-
+  Future<void> saveFullName(String fullName) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.setString('fullName', fullName);
+  }
   @override
   Widget build(BuildContext context) {
     final TextEditingController fullNameController = TextEditingController();
     final TextEditingController emailController = TextEditingController();
     final TextEditingController passwordController = TextEditingController();
+    SizeConfig.init(context);
+
     return Scaffold(
       body: Align(
         alignment: Alignment.topCenter,
@@ -36,7 +45,10 @@ class RegisterScreen extends StatelessWidget {
                 title: 'Confirm Registration',
                 desc: 'Are You Sure ?',
                 btnCancelOnPress: () {},
-                btnOkOnPress: () {},
+                btnOkOnPress: () async{
+                  await saveFullName(fullNameController.text);
+                  navigationService.navigateTo(Routes.getLocation);
+                },
               )
                 .show();
 
@@ -68,25 +80,25 @@ class RegisterScreen extends StatelessWidget {
             return Column(
 
               children: [
-                const SizedBox(height: 100,),
-                const Text("Sign Up", style: TextStyle(
+                 SizedBox(height: 10 * SizeConfig.heightMultiplier,),
+                 Text("Sign Up", style: TextStyle(
                   color: Colors.indigo,
-                  fontSize: 35,
+                  fontSize: 3 * SizeConfig.textMultiplier,
                   fontWeight: FontWeight.bold,
                 ),),
-                const Text("create your account", style: TextStyle(
+                 Text("create your account", style: TextStyle(
                   color: Colors.grey,
-                  fontSize: 15,
+                  fontSize: 2 * SizeConfig.textMultiplier,
                   fontWeight: FontWeight.w400,
                 ),),
-                const SizedBox(height: 40,),
+                 SizedBox(height: 5 * SizeConfig.heightMultiplier,),
                 CustomTextFormField(label: 'Full Name',
                   textEditingController: fullNameController,),
                 CustomTextFormField(label: 'EmailL',
                   textEditingController: emailController,),
                 CustomTextFormField(label: 'Password',
                   textEditingController: passwordController,),
-                const SizedBox(height: 15,),
+                SizedBox(height: 2 * SizeConfig.heightMultiplier,),
                 Button(backgroundColor: Colors.deepPurpleAccent,
                   label: "Next", function: (){
                   context.read<AuthBloc>().add(
@@ -99,13 +111,13 @@ class RegisterScreen extends StatelessWidget {
                     }
 
                 ),
-                 const SizedBox(height: 5,),
+                  SizedBox(height: 2 * SizeConfig.heightMultiplier,),
                 GestureDetector(
                   onTap:()=> Navigator.push(context ,MaterialPageRoute(builder:
                   (context)=> const LoginScreen())),
-                  child: const Text("Have an account ?", style: TextStyle(
+                  child:  Text("Have an account ?", style: TextStyle(
                     color: Colors.indigo,
-                    fontSize: 13,
+                    fontSize: 2 * SizeConfig.textMultiplier,
                     fontWeight: FontWeight.w400,
                   ),),
                 ),

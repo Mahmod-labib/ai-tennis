@@ -1,7 +1,9 @@
+import 'package:ai_tennis/core/routes/routes.dart';
+import 'package:ai_tennis/core/utils/size_config.dart';
 import 'package:ai_tennis/features/authencation/presentation/components/custom_button.dart';
 import 'package:ai_tennis/features/authencation/presentation/screens/login.dart';
 import 'package:ai_tennis/features/authencation/presentation/screens/register.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:ai_tennis/main.dart';
 import 'package:flutter/material.dart';
 
 class Auth extends StatelessWidget {
@@ -9,41 +11,43 @@ class Auth extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig.init(context);
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: Align(
         alignment: Alignment.center,
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.end,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Image(
-              image: AssetImage("assets/images/auth_logo_.jpg"),
-              width: 200,
-              height: 350,
+             Image(
+              image: const AssetImage("assets/images/auth_logo_.jpg"),
+              width:200,
+              height:200,
             ),
-             Button(
+            SizedBox(height: 5 * SizeConfig.heightMultiplier),
+
+            Button(
 
               label: "Sign In",
               backgroundColor: Colors.deepPurpleAccent,
-               function:()=>Navigator.push(context , MaterialPageRoute(builder:
-               (context)=>const RegisterScreen(),
-               )),
+               function:(){
+                navigationService.navigateTo(Routes.register);
+               }
             ),
-            const SizedBox(
-              height: 30,
-            ),
-             Button(
+            SizedBox(height: 2 * SizeConfig.heightMultiplier), // Responsive spacing
+
+            Button(
               label: "Log In",
               backgroundColor: Colors.black12,
-               function: () {
-                Navigator.push(context, MaterialPageRoute(builder:
-                (context)=>const LoginScreen(),
-                ));
-               },
+    function:(){
+    navigationService.navigateTo(Routes.login);
+    }
+
 
             ),
-            const SizedBox(
-              height: 100,
+             SizedBox(
+              height: 10*SizeConfig.heightMultiplier,
             ),
           ],
         ),

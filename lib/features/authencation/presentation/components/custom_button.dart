@@ -1,4 +1,4 @@
-import 'package:flutter/animation.dart';
+import 'package:ai_tennis/core/utils/size_config.dart';
 import 'package:flutter/material.dart';
 
 class Button extends StatelessWidget {
@@ -11,16 +11,18 @@ class Button extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    SizeConfig.init(context);
+
     return SizedBox(
-      height: 40,
-      width: 140,
+      height: 6 * SizeConfig.heightMultiplier,
+      width: 55 * SizeConfig.widthMultiplier,
       child: ElevatedButton(
           onPressed: function,
           style: ElevatedButton.styleFrom(
-            backgroundColor:backgroundColor?? Colors.indigoAccent,
+            backgroundColor:backgroundColor,
           ),
-          child:  Text(label , style: const TextStyle(
-            fontSize: 20 ,
+          child:  Text(label , style:  TextStyle(
+            fontSize: 2.5 * SizeConfig.textMultiplier, // Font size based on text multiplier
             color: Colors.white,
           ),)),
     );

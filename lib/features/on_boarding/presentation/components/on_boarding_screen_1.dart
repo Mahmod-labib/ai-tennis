@@ -1,3 +1,4 @@
+import 'package:ai_tennis/core/utils/size_config.dart';
 import 'package:flutter/material.dart';
 
 class OnBoardingScreen1 extends StatelessWidget {
@@ -5,21 +6,23 @@ class OnBoardingScreen1 extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return  const Scaffold(
+    SizeConfig.init(context);
+
+    return   Scaffold(
       backgroundColor: Colors.white,
       body: Column(
        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          SizedBox(height: 50,),
-          Image(image: AssetImage("assets/images/ob_img1.jpg") ,
-          width: 300,
-            height: 450,
+          SizedBox(height: 5 * SizeConfig.heightMultiplier), // Responsive height
+          Image(image: const AssetImage("assets/images/ob_img1.jpg") ,
+            width: 80 * SizeConfig.widthMultiplier,
+            height: 65 * SizeConfig.heightMultiplier,
           ),
-          Padding(
-            padding: EdgeInsets.only(left: 15 ,right: 15),
+           Padding(
+             padding: EdgeInsets.symmetric(horizontal: 5 * SizeConfig.widthMultiplier), // Responsive padding
             child: Text("Unleash Your Potential—Discover Personalized Coaching!" ,
             style: TextStyle(color: Colors.black , fontWeight: FontWeight.bold ,
-            fontSize: 14,
+              fontSize: 2.5 * SizeConfig.textMultiplier, // Responsive font size
             ),
             ),
           ),
