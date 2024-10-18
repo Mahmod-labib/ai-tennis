@@ -1,4 +1,5 @@
 import 'package:ai_tennis/features/forcast/data/models/forecast_day_model.dart';
+import 'package:ai_tennis/features/forcast/domain/entities/forecast.dart';
 import 'package:equatable/equatable.dart';
 import 'package:ai_tennis/features/forcast/data/models/weather_model.dart';
 import 'package:ai_tennis/features/forcast/data/models/forecast_model.dart';
@@ -40,4 +41,13 @@ class WeatherError extends WeatherState {
 
   @override
   List<Object?> get props => [message];
+}
+
+class WeatherPredictionLoaded extends WeatherState {
+  final int prediction;
+
+  const WeatherPredictionLoaded(this.prediction);
+
+  @override
+  List<Object> get props => [prediction];
 }

@@ -14,6 +14,7 @@ import 'package:ai_tennis/features/home/presentation/controller/get_location/get
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'bloc_observer.dart';
 import 'core/utils/size_config.dart';
 import 'firebase_options.dart';
 import 'package:ai_tennis/core/services/services_locater.dart' as di;
@@ -21,6 +22,7 @@ import 'package:ai_tennis/core/services/services_locater.dart' as di;
 final NavigationService navigationService = NavigationService(); // Global instance
 
 void main()async {
+  Bloc.observer = MyBlocObserver();
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
@@ -54,7 +56,7 @@ class MyApp extends StatelessWidget {
           ),
         ),
         BlocProvider(create: (context)=>WeatherBloc(
-            getWeather: sl(), getForecast:sl() ))
+            getWeather: sl(), getForecast:sl(), getPredictionUseCase: sl() ))
       ],
       child: LayoutBuilder(
         builder: (context ,constrains) {

@@ -1,4 +1,6 @@
 import 'package:ai_tennis/core/utils/size_config.dart';
+import 'package:ai_tennis/features/authencation/presentation/components/custom_button.dart';
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ai_tennis/features/forcast/presentation/conroller/weather_bloc.dart';
@@ -25,7 +27,7 @@ class _WeatherScreenState extends State<WeatherScreen> with SingleTickerProvider
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
 
-    // Trigger the events to fetch weather and forecast on screen initialization
+
     BlocProvider.of<WeatherBloc>(context)
       ..add(GetWeatherEvent(latitude: widget.latitude, longitude: widget.longitude))
       ..add(GetForecastEvent(latitude: widget.latitude, longitude: widget.longitude));
@@ -92,9 +94,54 @@ class _WeatherScreenState extends State<WeatherScreen> with SingleTickerProvider
               ],
             ),
           ),
+          Button(
+            backgroundColor: Colors.indigoAccent,
+            label: "Show Prediction",
+            function: () {
+              // Perform the prediction logic and set the description
+              String predictionDesc = _generatePredictionDescription(weather);
+              AwesomeDialog(
+                headerAnimationLoop: true,
+                customHeader: const Icon(
+                  Icons.info, color: Colors.indigoAccent, size: 55,
+                ),
+                btnOkColor: Colors.deepPurpleAccent,
+                context: context,
+                dialogType: DialogType.success,
+                animType: AnimType.rightSlide,
+                title: 'Prediction',
+                desc: predictionDesc,
+                btnCancelOnPress: () {},
+                btnOkOnPress: () {},
+              ).show();
+            },
+          ),
         ],
       ),
     );
+  }
+
+  // Function to generate a prediction description based on the weather data
+  String _generatePredictionDescription(WeatherModel weather) {
+    List<int> features = _generateFeatures(weather);
+
+    // Simple prediction logic: if it's day time and not raining, it's good for tennis
+    if (features[0] == 1 && features[1] == 0 && features[2] == 1) {
+      return 'Good weather for playing tennis!';
+    } else {
+      return 'Bad weather for tennis. Try another time.';
+    }
+  }
+
+  // Generate features from the weather model
+  List<int> _generateFeatures(WeatherModel weatherModel) {
+    List<int> features = [0, 0, 0];
+
+    features[0] = weatherModel.current.isDay ? 1 : 0;  // Is it day time?
+    features[1] = weatherModel.current.precipMm > 0 ? 1 : 0;  // Is it raining?
+    features[2] = weatherModel.current.tempC > 25 ? 1 : 0;  // Is it hot (above 25°C)?
+
+    return features;
   }
 
   Widget _buildForecastTab() {
@@ -105,7 +152,7 @@ class _WeatherScreenState extends State<WeatherScreen> with SingleTickerProvider
         } else if (state is WeatherError) {
           return Center(child: Text(state.message));
         } else if (state is ForecastLoaded) {
-           return _buildForecastContent();
+          return _buildForecastContent(state.forecast.cast<ForecastDayModel>());
         } else {
           return const Center(child: Text('Something went wrong!'));
         }

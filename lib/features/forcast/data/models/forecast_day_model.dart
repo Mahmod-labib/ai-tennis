@@ -19,11 +19,13 @@ class ForecastDayModel {
 
   factory ForecastDayModel.fromJson(Map<String, dynamic> json) {
     return ForecastDayModel(
-      date: json['date'],
-      dateEpoch: json['date_epoch'],
-      day: DayModel.fromJson(json['day']),
-      astro: AstroModel.fromJson(json['astro']),
-      hour: (json['hour'] as List).map((i) => HourModel.fromJson(i)).toList(),
+      date: json['date'] ?? 'Unknown',  // Fallback to 'Unknown' if null
+      dateEpoch: json['date_epoch'] ?? 0,  // Fallback to 0 if null
+      day: DayModel.fromJson(json['day'] ?? {}),  // Fallback to an empty map if null
+      astro: AstroModel.fromJson(json['astro'] ?? {}),  // Fallback to an empty map if null
+      hour: (json['hour'] as List?)
+          ?.map((i) => HourModel.fromJson(i ?? {}))
+          .toList() ?? [],  // Fallback to an empty list and map if null
     );
   }
 }
