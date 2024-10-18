@@ -26,3 +26,21 @@ class GetForecastEvent extends WeatherEvent {
   @override
   List<Object?> get props => [latitude, longitude];
 }
+
+class GetWeatherPredictionEvent extends WeatherEvent {
+  final String outlook;
+  final String temperature;
+  final String humidity;
+  final String windSpeed;
+  final String uvIndex;
+  const GetWeatherPredictionEvent( {
+    required this.outlook,
+    required this.temperature,
+    required this.humidity,
+    required this.windSpeed,
+    required this.uvIndex,
+  });
+
+  @override
+  List<Object> get props => [outlook, temperature, humidity , windSpeed , uvIndex];
+}

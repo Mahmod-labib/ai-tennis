@@ -7,9 +7,9 @@ class ForecastModel {
 
   factory ForecastModel.fromJson(Map<String, dynamic> json) {
     return ForecastModel(
-      forecastDays: (json['forecastday'] as List)
-          .map((day) => ForecastDayModel.fromJson(day))
-          .toList(),
+      forecastDays: (json['forecastday'] as List?)
+          ?.map((day) => ForecastDayModel.fromJson(day))
+          .toList() ?? [],  // Provide an empty list if forecastday is null
     );
   }
 }

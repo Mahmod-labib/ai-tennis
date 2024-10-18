@@ -4,10 +4,13 @@ import 'package:ai_tennis/features/authencation/domain/repository/auth_repositor
 import 'package:ai_tennis/features/authencation/domain/use_case/login_use_case.dart';
 import 'package:ai_tennis/features/authencation/domain/use_case/register_use_case.dart';
 import 'package:ai_tennis/features/authencation/presentation/controller/auth_bloc.dart';
+import 'package:ai_tennis/features/forcast/data/data_source/prediction.dart';
 import 'package:ai_tennis/features/forcast/data/data_source/weather_remote_data_source.dart';
 import 'package:ai_tennis/features/forcast/data/repository/weather_repository_impl.dart';
+import 'package:ai_tennis/features/forcast/domain/repository/prediction.dart';
 import 'package:ai_tennis/features/forcast/domain/repository/weather_repository.dart';
 import 'package:ai_tennis/features/forcast/domain/use_cases/get_forecast.dart';
+import 'package:ai_tennis/features/forcast/domain/use_cases/get_prediction_use_case.dart';
 import 'package:ai_tennis/features/forcast/domain/use_cases/get_weather.dart';
 import 'package:ai_tennis/features/home/data/repository/location_repository.dart';
 import 'package:ai_tennis/features/home/domain/repository/location_repository.dart';
@@ -16,6 +19,8 @@ import 'package:ai_tennis/features/home/presentation/controller/get_location/get
 import 'package:dio/dio.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get_it/get_it.dart';
+
+import '../../features/forcast/data/repository/prediction_impl.dart';
 
 final sl = GetIt.instance;
 
@@ -40,6 +45,8 @@ Future<void> init() async {
   sl.registerLazySingleton(() => GetCurrentLocationUseCase(sl()));
   sl.registerLazySingleton(() => GetWeather(sl<WeatherRepository>()));
   sl.registerLazySingleton(() => GetForecast(sl<WeatherRepository>()));
+  sl.registerLazySingleton(() => GetPredictionUseCase(sl<WeatherPredictionRepository>()));
+
   // Repository
   sl.registerLazySingleton<AuthRepository>(
         () => FirebaseAuthRepository(sl()),
@@ -48,13 +55,18 @@ Future<void> init() async {
   sl.registerLazySingleton<WeatherRepository>(
         () => WeatherRepositoryImpl(remoteDataSource: sl<WeatherRemoteDataSource>()),
   );
-
+  sl.registerLazySingleton<WeatherPredictionRepository>(
+        () => WeatherPredictionRepositoryImpl( sl<WeatherPredictionRemoteDataSource>()),
+  );
   // Data sources
   sl.registerLazySingleton<FirebaseRemoteDataSource>(
         () => FirebaseRemoteDataSource(firebaseAuth: sl()),
   );
   sl.registerLazySingleton<WeatherRemoteDataSource>(
         () => WeatherRemoteDataSourceImpl(sl<Dio>()),
+  );
+  sl.registerLazySingleton<WeatherPredictionRemoteDataSource>(
+        () => WeatherPredictionRemoteDataSource(),
   );
   // External (Firebase Auth)
   sl.registerLazySingleton<FirebaseAuth>(() => FirebaseAuth.instance);
